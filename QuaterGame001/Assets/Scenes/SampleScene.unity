@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 432329779}
   - component: {fileID: 432329784}
   - component: {fileID: 432329783}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,6 +383,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  jumped: 0
+  rigidbody: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,9 +881,9 @@ GameObject:
   - component: {fileID: 1889667944}
   - component: {fileID: 1889667943}
   - component: {fileID: 1889667942}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

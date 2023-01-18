@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,10 +10,15 @@ public class Player : MonoBehaviour
     float vAxis;
     Vector3 VectorMove;
 
+    public bool jumped = false;
+
+    [SerializeField]
+    private Rigidbody rigidbody;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -21,6 +27,7 @@ public class Player : MonoBehaviour
         GetInput();
         Move();
         Turn();
+        Jump();
     }
 
     void GetInput()
@@ -40,5 +47,26 @@ public class Player : MonoBehaviour
     void Turn()
     {
         transform.LookAt(transform.position + VectorMove); // 벡터의 더한 값대로 회전을 하게 됨
+    }
+
+    void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (jumped == false)
+            {
+                rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse); // ForceMode.Impulse : 순간적인 힘을 줄 때 무게를 적용할 때 사용, ForceMode.Force의 경우 연속적인 힘을 가할 때 사용된다
+                jumped = true;
+            }           
+        }  
+        
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.name == "Floor")
+        {
+            jumped = false;
+        }
     }
 }
