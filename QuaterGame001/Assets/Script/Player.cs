@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,14 +13,18 @@ public class Player : MonoBehaviour
     Vector3 VectorMove;
 
     public bool jumped = false;
+    public bool isdodge = false;
 
     [SerializeField]
     private Rigidbody rigidbody;
+
+  
 
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        
     }
 
     // Update is called once per frame
@@ -28,6 +34,7 @@ public class Player : MonoBehaviour
         Move();
         Turn();
         Jump();
+        Dodge();
     }
 
     void GetInput()
@@ -53,13 +60,38 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (jumped == false)
+            if (jumped == false && VectorMove == Vector3.zero && isdodge == false)
             {
                 rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse); // ForceMode.Impulse : 순간적인 힘을 줄 때 무게를 적용할 때 사용, ForceMode.Force의 경우 연속적인 힘을 가할 때 사용된다
+                //anim.SetBool("isJump", true);
+                //anim.SetTrigger("doJump");
                 jumped = true;
             }           
         }  
         
+    }
+
+    void Dodge()
+    {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            if (jumped == false && VectorMove != Vector3.zero && isdodge == false)
+            {               
+                speed *= 2;
+                this.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                //anim.SetTrigger("");
+                isdodge = true;
+
+                Invoke("DodgeOut", 0.4f);
+            }
+        }
+    }
+
+    void DodgeOut()
+    {
+        speed *= 0.5f;
+        isdodge = false;
+        this.gameObject.GetComponent<Renderer>().material.color = Color.red;
     }
 
     private void OnCollisionEnter(Collision collision)
